@@ -1,4 +1,4 @@
-#ioq3 + Modern
+# ioq3 + Modern
 ioq3 updated with some of the features from Quake 3 Modern, such as:
   * Widescreen support - aspect correct FoV (QL/Doom3 method), Q3 UI, and TA scripted menus (QL method) 
   * Localisation
