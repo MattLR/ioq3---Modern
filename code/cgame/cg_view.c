@@ -477,6 +477,17 @@ static int CG_CalcFov( void ) {
 	float	f;
 	int		inwater;
 
+	//Work out FoV Y based on a 4:3 view
+	x = 640.0f / tan(cg_fov.value / 360 * M_PI);
+	fov_y = atan2(480.0f, x);
+	fov_y = fov_y * 360 / M_PI;
+
+
+	//Get values to use for adjusting the x FoV
+	float ratio_x = cgs.glconfig.vidWidth;
+	float ratio_y = cgs.glconfig.vidHeight;
+	float y = ratio_y / tan(fov_y / 360.0f * M_PI);
+
 	if ( cg.predictedPlayerState.pm_type == PM_INTERMISSION ) {
 		// if in intermission, use a fixed value
 		fov_x = 90;
@@ -486,7 +497,14 @@ static int CG_CalcFov( void ) {
 			// dmflag to prevent wide fov for all clients
 			fov_x = 90;
 		} else {
-			fov_x = cg_fov.value;
+
+			if (cg_widescreenFov.integer == 0) {
+				fov_x = cg_fov.value;
+			}
+			else {
+				fov_x = atan2(ratio_x, y) * 360.0f / M_PI;
+			}
+
 			if ( fov_x < 1 ) {
 				fov_x = 1;
 			} else if ( fov_x > 160 ) {
